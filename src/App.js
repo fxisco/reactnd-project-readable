@@ -1,14 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as mainActionCreators from './actions/main';
+import NavBar from './components/NavBar';
+import './styles/App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-      </div>
-    );
-  }
-}
+    componentDidMount() {
+        this.props.fetchCategories();
+    }
 
-export default App;
+    render() {
+        const { categories } = this.props;
+
+        return (
+            <div className="app">
+                <div className="app-header">
+                    <span className="app-title">ReadApp</span>
+                </div>
+                <NavBar categories={categories}/>
+            </div>
+        );
+    }
+};
+
+const mapStateToProps = ({ main }) => {
+    return {
+        categories: main.categories
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(mainActionCreators, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
