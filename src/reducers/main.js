@@ -1,7 +1,8 @@
 import { mainActions } from '../constants/actions';
 
 const initialState = {
-    categories: []
+    categories: [],
+    selectedCategoryIndex: 0
 };
 
 const main = (state = initialState, action) => {
@@ -11,6 +12,12 @@ const main = (state = initialState, action) => {
                 ...state,
                 categories: action.categories
             };
+        }
+        case mainActions.SELECT_CATEGORY: {
+            return {
+                ...state,
+                selectedCategoryIndex: action.categoryIndex
+            }
         }
         default:
             return state;

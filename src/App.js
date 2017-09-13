@@ -10,15 +10,25 @@ class App extends Component {
         this.props.fetchCategories();
     }
 
+    handleCategorySelect(event, categoryId) {
+        event.preventDefault();
+
+        this.props.selectCategory(categoryId);
+    }
+
     render() {
-        const { categories } = this.props;
+        const { categories, selectedCategoryIndex } = this.props;
 
         return (
             <div className="app">
                 <div className="app-header">
                     <span className="app-title">ReadApp</span>
                 </div>
-                <NavBar categories={categories}/>
+                <NavBar
+                    categories={categories}
+                    onCategoryClick={this.handleCategorySelect.bind(this)}
+                    selectedCategoryIndex={selectedCategoryIndex}
+                />
             </div>
         );
     }
@@ -26,7 +36,8 @@ class App extends Component {
 
 const mapStateToProps = ({ main }) => {
     return {
-        categories: main.categories
+        categories: main.categories,
+        selectedCategoryIndex: main.selectedCategoryIndex
     };
 };
 
