@@ -6,7 +6,7 @@ const NavBar = ({ categories = [], onCategoryClick, selectedCategoryIndex }) => 
         <nav className="categories">
             {categories.map((category, index) => {
                 return (
-                    <a key={index} className={`${selectedCategoryIndex === index ? 'active' : ''}`} href="#" onClick={(event) => onCategoryClick(event, index)}>{category.name}</a>
+                    <a key={index} className={`${selectedCategoryIndex === index ? 'active' : ''}`} href={`/${category.name}`} onClick={(event) => onCategoryClick(event, index)}>{category.name}</a>
                 );
             })}
         </nav>
