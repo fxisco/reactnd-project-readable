@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 import * as mainActionCreators from './actions/main';
 import NavBar from './components/NavBar';
 import Posts from './components/Posts';
+import PostDetail from './components/PostDetail';
 import { UNDEFINED_CATEGORY } from './constants/values';
 import './styles/App.css';
 
@@ -27,22 +30,34 @@ class App extends Component {
         this.props.selectCategory(categoryId);
     }
 
+    handlePostClick(id) {
+        console.log(`GOZAMO ${id}`);
+    }
+
     render() {
         const { categories, posts, selectedCategoryIndex } = this.props;
 
         return (
             <div className="app">
                 <div className="app-header">
-                    <span className="app-title">ReadApp</span>
+                    <Link to="/" className="app-title">
+                        ReadApp
+                    </Link>
                 </div>
-                <NavBar
-                    categories={categories}
-                    onCategoryClick={this.handleCategorySelect.bind(this)}
-                    selectedCategoryIndex={selectedCategoryIndex}
-                />
-                <Posts
-                    posts={posts}
-                />
+                <Route exact path='/' render={() => (
+                    <div>
+                        <NavBar
+                            categories={categories}
+                            onCategoryClick={this.handleCategorySelect.bind(this)}
+                            selectedCategoryIndex={selectedCategoryIndex}
+                        />
+                        <Posts
+                            posts={posts}
+                            onClick={this.handlePostClick}
+                        />
+                    </div>
+                )}/>
+                <Route exact path='/post/:id' component={PostDetail} />
             </div>
         );
     }
@@ -60,4 +75,5 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators(mainActionCreators, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+

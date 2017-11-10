@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { DEFAULT_DATE_FORMAT } from '../constants/values';
 
-const Posts = ({ posts = [] }) => {
+const Posts = ({ onClick, posts = [] }) => {
     return (
         <div className="posts-container">
             {Object.keys(posts).map((postId) => {
@@ -11,9 +11,11 @@ const Posts = ({ posts = [] }) => {
 
                 return (
                     <div key={postId} className="post">
-                        <p className="post-title">
+                        <Link
+                            to={`/post/${postId}`}
+                            className="post-title">
                             {post.title}
-                        </p>
+                        </Link>
                         <p className="post-body">
                             {post.body}
                         </p>
