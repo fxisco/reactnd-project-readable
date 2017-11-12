@@ -9,14 +9,21 @@ const headers = {
     'Authorization': token
 };
 
-export const getCategories = () => {
-    return fetch(`${API_URL}/categories`, { headers })
+const fetchURL = (url) => {
+    return fetch(url, { headers })
         .then(res => res.json())
-        .then(data => data.categories);
+        .then(data => data);
+}
+
+export const getCategories = () => {
+    return fetchURL(`${API_URL}/categories`);
 };
 
 export const getCategoryPosts = (category) => {
-    return fetch(`${API_URL}/${category}/posts`, { headers })
-        .then(res => res.json())
-        .then(data => data);
+    return fetchURL(`${API_URL}/${category}/posts`);
 };
+
+export const getPost = (id) => {
+    return fetchURL(`${API_URL}/posts/${id}`);
+};
+

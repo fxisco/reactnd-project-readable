@@ -4,7 +4,8 @@ import { UNDEFINED_CATEGORY } from '../constants/values';
 const initialState = {
     categories: [],
     selectedCategoryIndex: UNDEFINED_CATEGORY,
-    posts: {}
+    posts: {},
+    loadingText: 'Loading'
 };
 
 const main = (state = initialState, action) => {
@@ -16,12 +17,14 @@ const main = (state = initialState, action) => {
                 selectedCategoryIndex: 0
             };
         }
+
         case mainActions.SELECT_CATEGORY: {
             return {
                 ...state,
                 selectedCategoryIndex: action.categoryIndex
             }
         }
+
         case mainActions.FETCH_CATEGORY_POSTS_SUCCESS: {
             return {
                 ...state,
@@ -31,6 +34,21 @@ const main = (state = initialState, action) => {
                 }
             }
         }
+
+        case mainActions.SET_LOADING_TEXT: {
+            return {
+                ...state,
+                loadingText: action.text
+            };
+        }
+
+        case mainActions.RESET_LOADING_TEXT: {
+            return {
+                ...state,
+                loadingText: initialState.loadingText
+            };
+        }
+
         default:
             return state;
     }

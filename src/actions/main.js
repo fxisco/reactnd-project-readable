@@ -1,5 +1,5 @@
 import { mainActions } from '../constants/actions';
-import { getCategories, getCategoryPosts } from '../helpers/api';
+import { getCategories, getCategoryPosts, getPost } from '../helpers/api';
 
 export const selectCategory = (categoryIndex) => {
     return {
@@ -8,7 +8,7 @@ export const selectCategory = (categoryIndex) => {
     };
 };
 
-export const fetchCategoriesSucces = (categories) => {
+export const fetchCategoriesSuccess = (categories) => {
     return {
         type: mainActions.FETCH_CATEGORIES_SUCCESS,
         categories
@@ -18,8 +18,8 @@ export const fetchCategoriesSucces = (categories) => {
 export const fetchCategories = () => {
     return (dispatch) => {
         getCategories()
-            .then((categories) => {
-                dispatch(fetchCategoriesSucces(categories));
+            .then((data) => {
+                dispatch(fetchCategoriesSuccess(data.categories));
             })
             .catch((error) => {
                 console.log(error);
@@ -27,11 +27,11 @@ export const fetchCategories = () => {
     };
 };
 
-export const fetchCategoryPostsSucces = (posts) => {
+export const fetchCategoryPostsSuccess = (posts) => {
     return {
         type: mainActions.FETCH_CATEGORY_POSTS_SUCCESS,
         posts
-    }
+    };
 };
 
 export const fetchCategoryPosts = (category) => {
@@ -44,10 +44,43 @@ export const fetchCategoryPosts = (category) => {
                     return accumulator;
                 }, {});
 
-                dispatch(fetchCategoryPostsSucces(newPosts));
+                dispatch(fetchCategoryPostsSuccess(newPosts));
             })
             .catch((error) => {
                 console.log(error);
             });
+    };
+};
+
+export const fetchPostSuccess = (post) => {
+    return {
+        type: mainActions.FETCH_POST_SUCCESS,
+        post
+    };
+};
+
+export const fetchPost = (id) => {
+    return (dispatch) => {
+        getPost(id)
+            .then((post) => {
+                console.log('::post', post);
+                dispatch(fetchPostSuccess(post));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const setLoadingText = (text) => {
+    return {
+        type: mainActions.SET_LOADING_TEXT,
+        text
+    };
+};
+
+export const resetLoadingText = () => {
+    return {
+        type: mainActions.RESET_LOADING_TEXT,
     };
 };
