@@ -5,7 +5,8 @@ const initialState = {
     categories: [],
     selectedCategoryIndex: UNDEFINED_CATEGORY,
     posts: {},
-    loadingText: 'Loading'
+    loadingText: 'Loading',
+    postsDetail: {}
 };
 
 const main = (state = initialState, action) => {
@@ -46,6 +47,28 @@ const main = (state = initialState, action) => {
             return {
                 ...state,
                 loadingText: initialState.loadingText
+            };
+        }
+
+        case mainActions.FETCH_POST_SUCCESS: {
+            return {
+                ...state,
+                postsDetail: {
+                    [action.post.id]: {
+                        ...action.post
+                    }
+                }
+            };
+        }
+
+        case mainActions.FETCH_POST_COMMENTS_SUCCESS: {
+            return {
+                ...state,
+                postsComments: {
+                    [action.id]: {
+                        ...action.comments
+                    }
+                }
             };
         }
 

@@ -1,5 +1,5 @@
 import { mainActions } from '../constants/actions';
-import { getCategories, getCategoryPosts, getPost } from '../helpers/api';
+import { getCategories, getCategoryPosts, getPost, getPostComments } from '../helpers/api';
 
 export const selectCategory = (categoryIndex) => {
     return {
@@ -65,6 +65,26 @@ export const fetchPost = (id) => {
             .then((post) => {
                 console.log('::post', post);
                 dispatch(fetchPostSuccess(post));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const fetchPostCommentsSuccess = (id, comments) => {
+    return {
+        type: mainActions.FETCH_POST_COMMENTS_SUCCESS,
+        comments,
+        id
+    };
+};
+
+export const fetchPostComments = (id) => {
+    return (dispatch) => {
+        getPostComments(id)
+            .then((comments) => {
+                dispatch(fetchPostCommentsSuccess(id, comments));
             })
             .catch((error) => {
                 console.log(error);

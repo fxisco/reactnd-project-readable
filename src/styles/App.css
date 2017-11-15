@@ -25,7 +25,7 @@ nav.categories .active {
     box-shadow: -5px 0px 20px grey;
 }
 
-.posts-container {
+.container {
     max-width: 1024px;
     padding: 50px;
     margin: 0 auto;
@@ -59,4 +59,13 @@ nav.categories .active {
 .post-date {
     color: #696969;
     font-style: italic;
+}
+
+.row {
+    margin: 10px 0;
+}
+
+.back-button {
+    text-decoration: none;
+    color: black;
 }
