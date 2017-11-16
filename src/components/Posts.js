@@ -4,14 +4,20 @@ import { Link } from 'react-router-dom';
 import { DEFAULT_DATE_FORMAT } from '../constants/values';
 import Post from './Post';
 
-const Posts = ({ onClick, posts = [] }) => {
+const Posts = ({ onClick, category, posts = [] }) => {
     return (
         <div className="container">
-            {Object.keys(posts).map((id) => {
+            {Object.keys(posts)
+                .filter((id) => {
+                    const post = posts[id];
+
+                    return post.category === category;
+                })
+                .map((id) => {
                 const post = posts[id];
 
                 return (
-                    <Post {...post} />
+                    <Post key={`post-${id}`} {...post} />
                 );
             })}
         </div>

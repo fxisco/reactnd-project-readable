@@ -31,12 +31,14 @@ nav.categories .active {
     margin: 0 auto;
 }
 
-.post {
+.post-container,
+.comment-container {
     border: 1px solid #d3d3d3;
     padding: 20px;
 }
 
 .post-date,
+.comment-date,
 .post-author {
     text-align: right;
 }
@@ -56,7 +58,8 @@ nav.categories .active {
     border-color: #ff0000;
 }
 
-.post-date {
+.post-date,
+.comment-date {
     color: #696969;
     font-style: italic;
 }
@@ -68,4 +71,36 @@ nav.categories .active {
 .back-button {
     text-decoration: none;
     color: black;
+}
+
+.post-comments-container {
+    padding: 0;
+}
+
+.post-comments-container .comment-container:last-child {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.comment-container {
+    list-style: none;
+    border-bottom: 0;
+}
+
+.score-container {
+    text-align: right;
+}
+
+.score,
+.score-vote {
+    margin-right: 10px;
+}
+
+.score-container .score-vote:last-child {
+    margin: 0;
+}
+
+.score-vote {
+    font-size: 30px;
+    padding: 5px 15px;
+    background-color: #d3d3d3;
 }

@@ -16,8 +16,9 @@ class App extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.selectedCategoryIndex === UNDEFINED_CATEGORY &&
-            nextProps.selectedCategoryIndex !== UNDEFINED_CATEGORY) {
+        if ((this.props.selectedCategoryIndex === UNDEFINED_CATEGORY &&
+                    nextProps.selectedCategoryIndex !== UNDEFINED_CATEGORY) ||
+            (this.props.selectedCategoryIndex !== nextProps.selectedCategoryIndex)) {
             const { categories, selectedCategoryIndex } = nextProps;
 
             this.props.fetchCategoryPosts(categories[selectedCategoryIndex].name);
@@ -28,10 +29,6 @@ class App extends Component {
         event.preventDefault();
 
         this.props.selectCategory(categoryId);
-    }
-
-    handlePostClick(id) {
-        console.log(`GOZAMO ${id}`);
     }
 
     render() {
@@ -53,7 +50,7 @@ class App extends Component {
                         />
                         <Posts
                             posts={posts}
-                            onClick={this.handlePostClick}
+                            category={categories[selectedCategoryIndex] && categories[selectedCategoryIndex].name}
                         />
                     </div>
                 )}/>
