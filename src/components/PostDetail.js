@@ -28,7 +28,7 @@ class PostDetail extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <Link to='/' className="back-button">↵ Back</Link>
+                    <Link to={post ? `/${post.category}` : '/'} className="back-button">↵ Back</Link>
                 </div>
                 {post && <Post {...post} />}
                 {comments && Object.keys(comments).length > 0 &&

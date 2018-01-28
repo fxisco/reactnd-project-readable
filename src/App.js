@@ -4,31 +4,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { Link, Route } from 'react-router-dom'
 import * as mainActionCreators from './actions/main';
-import NavBar from './components/NavBar';
-import Posts from './components/Posts';
+import * as postsActionCreators from './actions/posts';
 import PostDetail from './components/PostDetail';
+import PostsList from './components/PostsList';
 import { UNDEFINED_CATEGORY } from './constants/values';
 import './styles/App.css';
 
 class App extends Component {
     componentDidMount() {
         this.props.fetchCategories();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ((this.props.selectedCategoryIndex === UNDEFINED_CATEGORY &&
-                    nextProps.selectedCategoryIndex !== UNDEFINED_CATEGORY) ||
-            (this.props.selectedCategoryIndex !== nextProps.selectedCategoryIndex)) {
-            const { categories, selectedCategoryIndex } = nextProps;
-
-            this.props.fetchCategoryPosts(categories[selectedCategoryIndex].name);
-        }
-    }
-
-    handleCategorySelect(event, categoryId) {
-        event.preventDefault();
-
-        this.props.selectCategory(categoryId);
+        this.props.fetchPosts();
     }
 
     render() {
@@ -41,36 +26,28 @@ class App extends Component {
                         ReadApp
                     </Link>
                 </div>
-                <Route exact path='/' render={() => (
-                    <div>
-                        <NavBar
-                            categories={categories}
-                            onCategoryClick={this.handleCategorySelect.bind(this)}
-                            selectedCategoryIndex={selectedCategoryIndex}
-                        />
-                        <Posts
-                            posts={posts}
-                            category={categories[selectedCategoryIndex] && categories[selectedCategoryIndex].name}
-                        />
-                    </div>
-                )}/>
-                <Route exact path='/post/:id' component={PostDetail} />
+                <Route exact path='/:category?' component={PostsList} />
+                <Route exact path='/:category/:id' component={PostDetail} />
             </div>
         );
     }
 };
 
-const mapStateToProps = ({ main }) => {
+const mapStateToProps = ({ main, posts }) => {
     return {
         categories: main.categories,
-        posts: main.posts,
+        posts: posts.posts,
         selectedCategoryIndex: main.selectedCategoryIndex
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(mainActionCreators, dispatch);
+    return bindActionCreators({
+        ...mainActionCreators,
+        ...postsActionCreators
+    }, dispatch);
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+// @TODO: check if connect App.js is required
 
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

@@ -1,8 +1,8 @@
 import { mainActions } from '../constants/actions';
-import { UNDEFINED_CATEGORY } from '../constants/values';
+import { UNDEFINED_CATEGORY, CATEGORY_ALL } from '../constants/values';
 
 const initialState = {
-    categories: [],
+    categories: [CATEGORY_ALL],
     selectedCategoryIndex: UNDEFINED_CATEGORY,
     posts: {},
     loadingText: 'Loading',
@@ -14,7 +14,10 @@ const main = (state = initialState, action) => {
         case mainActions.FETCH_CATEGORIES_SUCCESS: {
             return {
                 ...state,
-                categories: action.categories,
+                categories: [
+                    ...initialState.categories,
+                    ...action.categories
+                ],
                 selectedCategoryIndex: 0
             };
         }

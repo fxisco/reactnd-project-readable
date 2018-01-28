@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const NavBar = ({ categories = [], onCategoryClick, selectedCategoryIndex }) => {
+const NavBar = ({ categories = [], selectedCategory }) => {
     return (
         <nav className="categories">
             {categories.map((category, index) => {
                 return (
-                    <a key={index} className={`${selectedCategoryIndex === index ? 'active' : ''}`} href={`/${category.name}`} onClick={(event) => onCategoryClick(event, index)}>{category.name}</a>
+                    <Link key={index} className={`${category.path === selectedCategory ? 'active' : ''}`} to={`/${category.path}`}>{category.name}</Link>
                 );
             })}
         </nav>
@@ -16,7 +16,7 @@ const NavBar = ({ categories = [], onCategoryClick, selectedCategoryIndex }) => 
 
 NavBar.PropTypes = {
     categories: PropTypes.array.isRequired,
-    selectedCategoryIndex: PropTypes.number
+    selectedCategory: PropTypes.number
 };
 
 export default NavBar;

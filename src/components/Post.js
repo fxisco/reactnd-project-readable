@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { DEFAULT_DATE_FORMAT } from '../constants/values';
 import Score from './Score';
 
-const Post = ({ author, body, id, timestamp, title, voteScore }) => {
+const Post = ({ author, body, category, id, timestamp, title, voteScore }) => {
     return (
         <div key={id} className="post-container">
             <Link
-                to={`/post/${id}`}
+                to={`/${category}/${id}`}
                 className="post-title">
                 {title}
             </Link>

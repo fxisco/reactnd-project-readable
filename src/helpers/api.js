@@ -31,3 +31,7 @@ export const getPostComments = (id) => {
     return fetchURL(`${API_URL}/posts/${id}/comments`);
 };
 
+export const getPosts = () => {
+    return fetchURL(`${API_URL}/posts`);
+};
+
