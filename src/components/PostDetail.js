@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Loading from './Loading';
 import Post from './Post';
 import moment from 'moment';
 import { connect } from 'react-redux';

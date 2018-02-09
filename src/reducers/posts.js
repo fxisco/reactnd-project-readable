@@ -1,8 +1,8 @@
 import { postActions } from '../constants/actions';
-
+import { UP_VOTE } from '../constants/values';
 
 const initialState = {
-    posts: {}
+    posts: []
 };
 
 const posts = (state = initialState, action) => {
@@ -11,6 +11,27 @@ const posts = (state = initialState, action) => {
             return {
                 ...state,
                 posts: action.posts,
+            };
+        }
+        case postActions.SUBMIT_POST_SUCCESS: {
+            return {
+                ...state,
+                posts: [
+                    ...state.posts,
+                    action.post
+                ]
+            };
+        }
+        case postActions.UPDATE_POST_SUCCESS: {
+            const index = state.posts.findIndex(item => item.id === action.id);
+
+            return {
+                ...state,
+                posts: [
+                    ...state.posts.slice(0, index),
+                    action.data,
+                    ...state.posts.slice(index + 1)
+                ]
             };
         }
 

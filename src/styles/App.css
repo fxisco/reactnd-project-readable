@@ -104,3 +104,43 @@ nav.categories .active {
     padding: 5px 15px;
     background-color: #d3d3d3;
 }
+
+.new-post-container {
+    margin-bottom: 20px;
+}
+
+.new-post-text {
+    text-align: right;
+}
+
+.new-post-info {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.new-post-info input {
+    font-size: 18px;
+    /*padding: 10px;*/
+    width: 100%;
+}
+
+.new-post-info .author,
+.new-post-info .title {
+    margin-right: 10px;
+    /*float: left;*/
+    /*margin-right: 30px;*/
+    /*width: 30%;*/
+}
+
+.new-post {
+    box-sizing: border-box;
+    font-size: 18px;
+    height: 100px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+.new-post-button {
+    font-size: 20px;
+}

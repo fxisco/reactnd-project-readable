@@ -1,5 +1,9 @@
 import { postActions } from '../constants/actions';
-import { getPosts } from '../helpers/api';
+import {
+    getPosts,
+    setNewPost,
+    updatePostVote
+} from '../helpers/api';
 
 export const fetchPostsSuccess = (posts) => {
     return {
@@ -19,3 +23,44 @@ export const fetchPosts = () => {
             });
     };
 };
+
+export const updatePost = (id, data) => {
+    return {
+        type: postActions.UPDATE_POST_SUCCESS,
+        id,
+        data
+    };
+};
+
+export const votePost = (id, type) => {
+    return (dispatch) => {
+        updatePostVote(id, type)
+            .then((data) => {
+                dispatch(updatePost(id, data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const addPost = (post) => {
+    return {
+        type: postActions.SUBMIT_POST_SUCCESS,
+        post
+    };
+};
+
+export const submitPost = (post) => {
+    return (dispatch) => {
+        setNewPost(post)
+            .then((data) => {
+                console.log('::data', data);
+                dispatch(addPost(post));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+

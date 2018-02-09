@@ -6,8 +6,7 @@ import { Link, Route } from 'react-router-dom'
 import * as mainActionCreators from './actions/main';
 import * as postsActionCreators from './actions/posts';
 import PostDetail from './components/PostDetail';
-import PostsList from './components/PostsList';
-import { UNDEFINED_CATEGORY } from './constants/values';
+import PostsContainer from './containers/PostsContainer';
 import './styles/App.css';
 
 class App extends Component {
@@ -17,8 +16,6 @@ class App extends Component {
     }
 
     render() {
-        const { categories, posts, selectedCategoryIndex } = this.props;
-
         return (
             <div className="app">
                 <div className="app-header">
@@ -26,19 +23,11 @@ class App extends Component {
                         ReadApp
                     </Link>
                 </div>
-                <Route exact path='/:category?' component={PostsList} />
+                <Route exact path='/:category?' component={PostsContainer} />
                 <Route exact path='/:category/:id' component={PostDetail} />
             </div>
         );
     }
-};
-
-const mapStateToProps = ({ main, posts }) => {
-    return {
-        categories: main.categories,
-        posts: posts.posts,
-        selectedCategoryIndex: main.selectedCategoryIndex
-    };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -48,6 +37,4 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch);
 };
 
-// @TODO: check if connect App.js is required
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter(connect(() => {}, mapDispatchToProps)(App))

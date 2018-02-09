@@ -1,17 +1,22 @@
 import React from 'react';
 
-const Score = ({ className = '', voteScore = 0 }) => {
+const Score = ({
+    className = '',
+    onVoteUp = () => {},
+    onVoteDown = () => {},
+    voteScore = 0
+}) => {
     return (
         <div className="score-container">
             <span className="score">
                 Score: {voteScore}
             </span>
-            <span className="score-vote">
+            <button className="score-vote" onClick={onVoteUp}>
                 ↑
-            </span>
-            <span className="score-vote">
+            </button>
+            <button className="score-vote" onClick={onVoteDown}>
                 ↓
-            </span>
+            </button>
         </div>
     );
 };

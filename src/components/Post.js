@@ -1,10 +1,24 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { DEFAULT_DATE_FORMAT } from '../constants/values';
+import {
+    DEFAULT_DATE_FORMAT,
+    DOWN_VOTE,
+    UP_VOTE,
+} from '../constants/values';
 import Score from './Score';
 
-const Post = ({ author, body, category, id, timestamp, title, voteScore }) => {
+const Post = ({
+    author,
+    body,
+    category,
+    id,
+    onVoteDown = () => {},
+    onVoteUp = () => {},
+    timestamp,
+    title,
+    voteScore
+}) => {
     return (
         <div key={id} className="post-container">
             <Link
@@ -23,7 +37,11 @@ const Post = ({ author, body, category, id, timestamp, title, voteScore }) => {
                     {moment(timestamp).format(DEFAULT_DATE_FORMAT)}
                 </p>
             </div>
-            <Score voteScore={voteScore} />
+            <Score
+                voteScore={voteScore}
+                onVoteUp={onVoteUp}
+                onVoteDown={onVoteDown}
+            />
         </div>
     );
 };
