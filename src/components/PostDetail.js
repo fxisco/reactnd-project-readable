@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import Post from './Post';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import * as mainActionCreators from '../actions/main';
+import * as postActionCreators from '../actions/posts';
 import CommentsList from './CommentsList';
 
 
 class PostDetail extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onDeleteComment = this.onDeleteComment.bind(this);
+    }
     componentDidMount() {
         const { post, comments } = this.props;
 
@@ -19,6 +23,10 @@ class PostDetail extends Component {
         if (!comments) {
             this.props.fetchPostComments(this.props.match.params.id);
         }
+    }
+
+    onDeleteComment(id) {
+        this.props.deletePostComment(id);
     }
 
     render() {
@@ -35,7 +43,7 @@ class PostDetail extends Component {
                         <h2>
                             Comments
                         </h2>
-                        <CommentsList comments={comments} />
+                        <CommentsList comments={comments} onDeleteComment={this.onDeleteComment} />
                     </div>
                 }
             </div>
@@ -43,15 +51,15 @@ class PostDetail extends Component {
     }
 };
 
-const mapStateToProps = ({ main }, props) => {
+const mapStateToProps = ({ posts }, props) => {
     return {
-        comments: main.postsComments[props.match.params.id],
-        post: main.posts[props.match.params.id],
+        comments: posts.postsComments[props.match.params.id],
+        post: posts.postsDetails[props.match.params.id],
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(mainActionCreators, dispatch);
+    return bindActionCreators(postActionCreators, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetail);

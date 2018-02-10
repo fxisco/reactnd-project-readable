@@ -1,6 +1,9 @@
 import { postActions } from '../constants/actions';
 import {
+    deleteComment,
+    getPost,
     getPosts,
+    getPostComments,
     setNewPost,
     updatePostVote
 } from '../helpers/api';
@@ -55,7 +58,6 @@ export const submitPost = (post) => {
     return (dispatch) => {
         setNewPost(post)
             .then((data) => {
-                console.log('::data', data);
                 dispatch(addPost(post));
             })
             .catch((error) => {
@@ -64,3 +66,60 @@ export const submitPost = (post) => {
     };
 };
 
+export const fetchPostCommentsSuccess = (id, comments) => {
+    return {
+        type: postActions.FETCH_POST_COMMENTS_SUCCESS,
+        comments,
+        id
+    };
+};
+
+export const fetchPostComments = (id) => {
+    return (dispatch) => {
+        getPostComments(id)
+            .then((comments) => {
+                dispatch(fetchPostCommentsSuccess(id, comments));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const fetchPostSuccess = (post) => {
+    return {
+        type: postActions.FETCH_POST_SUCCESS,
+        post
+    };
+};
+
+export const fetchPost = (id) => {
+    return (dispatch) => {
+        getPost(id)
+            .then((post) => {
+                dispatch(fetchPostSuccess(post));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const deletePostCommentSuccess = (id) => {
+    return {
+        type: postActions.DELETE_POST_SUCCESS,
+        id
+    };
+};
+
+export const deletePostComment = (id) => {
+    return (dispatch) => {
+        deleteComment(id)
+            .then((comment) => {
+                dispatch(deletePostCommentSuccess(comment.id));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};

@@ -144,3 +144,11 @@ nav.categories .active {
 .new-post-button {
     font-size: 20px;
 }
+
+.comment-action {
+    text-align: right;
+}
+
+.action-delete {
+    color: red;
+}

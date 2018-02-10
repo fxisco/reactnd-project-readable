@@ -1,11 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import {
-    DEFAULT_DATE_FORMAT,
-    DOWN_VOTE,
-    UP_VOTE,
-} from '../constants/values';
+import { DEFAULT_DATE_FORMAT } from '../constants/values';
 import Score from './Score';
 
 const Post = ({

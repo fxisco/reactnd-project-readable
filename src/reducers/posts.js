@@ -1,8 +1,9 @@
 import { postActions } from '../constants/actions';
-import { UP_VOTE } from '../constants/values';
 
 const initialState = {
-    posts: []
+    posts: [],
+    postsComments: {},
+    postsDetails: {}
 };
 
 const posts = (state = initialState, action) => {
@@ -32,6 +33,43 @@ const posts = (state = initialState, action) => {
                     action.data,
                     ...state.posts.slice(index + 1)
                 ]
+            };
+        }
+
+        case postActions.FETCH_POST_COMMENTS_SUCCESS: {
+            return {
+                ...state,
+                postsComments: {
+                    ...state.postsComments,
+                    [action.id]: {
+                        ...action.comments
+                    }
+                }
+            };
+        }
+
+        case postActions.FETCH_POST_SUCCESS: {
+            return {
+                ...state,
+                postsDetails: {
+                    ...state.posts,
+                    [action.post.id]: {
+                        ...action.post
+                    }
+                }
+            };
+        }
+
+        case postActions.DELETE_POST_SUCCESS: {
+            return {
+                ...state,
+                postsDetails: {
+                    ...state.postsDetails,
+                    [action.id] : {
+                        ...state.postsDetails[action.id],
+                        deleted: true
+                    }
+                }
             };
         }
 

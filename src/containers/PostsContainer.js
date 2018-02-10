@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import * as postsActionCreators from '../actions/posts';
 import { generateId  } from '../helpers/utils';
 import NavBar from '../components/NavBar';

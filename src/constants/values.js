@@ -8,6 +8,7 @@ export const CATEGORY_ALL = {
 };
 
 export const HTTP_METHODS = {
+    DELETE: 'DELETE',
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',

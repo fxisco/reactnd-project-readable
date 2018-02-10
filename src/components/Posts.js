@@ -1,11 +1,6 @@
 import React from 'react';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 import {
-    CATEGORY_ALL,
-    DEFAULT_DATE_FORMAT,
     DOWN_VOTE,
-    UNDEFINED_CATEGORY,
     UP_VOTE,
 } from '../constants/values';
 import Post from './Post';

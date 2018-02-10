@@ -1,7 +1,12 @@
 import { API_URL } from '../config';
 import { HTTP_METHODS } from '../constants/values';
 
-const { GET, POST, PUT } = HTTP_METHODS;
+const {
+    DELETE,
+    GET,
+    POST,
+    PUT,
+} = HTTP_METHODS;
 
 let token = localStorage.token
 if (!token)
@@ -51,4 +56,8 @@ export const updatePostVote = (id, type) => {
 
 export const setNewPost = (post = {}) => {
     return fetchURL(`${API_URL}/posts`, { method: POST, body:{ ...post }});
+};
+
+export const deleteComment = (id) => {
+    return fetchURL(`${API_URL}/comments/${id}`, { method: DELETE });
 };
