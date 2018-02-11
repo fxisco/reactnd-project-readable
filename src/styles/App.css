@@ -120,21 +120,23 @@ nav.categories .active {
 
 .new-post-info input {
     font-size: 18px;
-    /*padding: 10px;*/
     width: 100%;
 }
 
 .new-post-info .author,
 .new-post-info .title {
     margin-right: 10px;
-    /*float: left;*/
-    /*margin-right: 30px;*/
-    /*width: 30%;*/
+}
+
+.new-post,
+.comment-input,
+.comment-submit,
+.comment-author {
+    font-size: 18px;
 }
 
 .new-post {
     box-sizing: border-box;
-    font-size: 18px;
     height: 100px;
     padding: 10px;
     resize: none;
@@ -151,4 +153,20 @@ nav.categories .active {
 
 .action-delete {
     color: red;
+}
+
+.comment-author,
+.comment-input {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-input {
+    box-sizing: border-box;
+    height: 100px;
+    width: 100%;
+}
+
+.comment-form-submit {
+    text-align: right;
 }

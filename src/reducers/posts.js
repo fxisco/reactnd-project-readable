@@ -73,6 +73,21 @@ const posts = (state = initialState, action) => {
             };
         }
 
+        case postActions.POST_COMMENT_SUCCESS: {
+            return {
+                ...state,
+                postsComments: {
+                    ...state.postsComments,
+                    [action.comment.parentId] : {
+                        ...state.postsComments[action.comment.parentId],
+                        [Object.keys(state.postsComments[action.comment.parentId]).length + 1]: {
+                            ...action.comment
+                        }
+                    }
+                }
+            };
+        }
+
         default:
             return state;
     }

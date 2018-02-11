@@ -5,13 +5,21 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import * as postActionCreators from '../actions/posts';
 import CommentsList from './CommentsList';
+import { generateId  } from '../helpers/utils';
 
 
 class PostDetail extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            author: '',
+            comment: ''
+        }
+
         this.onDeleteComment = this.onDeleteComment.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
+        this.onCommentSubmit = this.onCommentSubmit.bind(this);
     }
     componentDidMount() {
         const { post, comments } = this.props;
@@ -29,7 +37,31 @@ class PostDetail extends Component {
         this.props.deletePostComment(id);
     }
 
+    onTextChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    onCommentSubmit() {
+        const { author, comment } = this.state;
+
+        this.props.postComment({
+            author,
+            body: comment,
+            id: generateId(),
+            timestamp: Date.now(),
+            parentId: this.props.match.params.id,
+        });
+
+        this.setState({
+            author: '',
+            comment: ''
+        });
+    }
+
     render() {
+        const { author, comment } = this.state;
         const { comments, post } = this.props;
 
         return (
@@ -38,6 +70,13 @@ class PostDetail extends Component {
                     <Link to={post ? `/${post.category}` : '/'} className="back-button">↵ Back</Link>
                 </div>
                 {post && <Post {...post} />}
+                <div className="row">
+                    <input className="comment-author" name="author" onChange={this.onTextChange} value={author} placeholder="Enter author" />
+                    <input className="comment-input" name="comment" onChange={this.onTextChange} value={comment} placeholder="Enter comment" />
+                    <div className="comment-form-submit">
+                        {author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
+                    </div>
+                </div>
                 {comments && Object.keys(comments).length > 0 &&
                     <div className="row">
                         <h2>

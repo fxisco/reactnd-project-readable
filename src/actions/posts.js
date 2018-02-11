@@ -5,7 +5,8 @@ import {
     getPosts,
     getPostComments,
     setNewPost,
-    updatePostVote
+    updatePostVote,
+    submitComment,
 } from '../helpers/api';
 
 export const fetchPostsSuccess = (posts) => {
@@ -117,6 +118,25 @@ export const deletePostComment = (id) => {
         deleteComment(id)
             .then((comment) => {
                 dispatch(deletePostCommentSuccess(comment.id));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const postCommentSuccess = (comment) => {
+    return {
+        type: postActions.POST_COMMENT_SUCCESS,
+        comment
+    };
+};
+
+export const postComment = (comment) => {
+    return (dispatch) => {
+        submitComment(comment)
+            .then((data) => {
+                dispatch(postCommentSuccess(data));
             })
             .catch((error) => {
                 console.log(error);

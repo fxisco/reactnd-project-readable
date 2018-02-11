@@ -61,3 +61,7 @@ export const setNewPost = (post = {}) => {
 export const deleteComment = (id) => {
     return fetchURL(`${API_URL}/comments/${id}`, { method: DELETE });
 };
+
+export const submitComment = (comment) => {
+    return fetchURL(`${API_URL}/comments`, { method: POST, body:{ ...comment } });
+};
