@@ -37,9 +37,7 @@ nav.categories .active {
     padding: 20px;
 }
 
-.post-date,
-.comment-date,
-.post-author {
+.right {
     text-align: right;
 }
 
@@ -53,9 +51,29 @@ nav.categories .active {
     text-decoration: none;
 }
 
+.post-sorter {
+    list-style-position: inside;
+    text-align: right;
+}
+
+.post-sorter-list > li {
+    display: inline;
+    padding-left: 10px;
+}
+
 .post-title:hover {
     cursor: pointer;
     border-color: #ff0000;
+}
+
+.sort-button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.sort-button.selected {
+    font-weight: bold;
 }
 
 .post-date,

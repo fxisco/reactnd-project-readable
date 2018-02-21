@@ -14,3 +14,12 @@ export const HTTP_METHODS = {
     PUT: 'PUT',
 };
 
+export const SORT_BY = {
+    DATE: 'DATE',
+    SCORE: 'SCORE'
+};
+
+export const SORT_ORDER = {
+    ASC: 'ASC',
+    DESC: 'DESC'
+};

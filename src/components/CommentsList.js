@@ -15,7 +15,7 @@ const Comment = ({ author, body, deleted, id, onDeleteComment, voteScore, timest
             </div>
             <div>
                 <p>{body}</p>
-                <p className="comment-date">
+                <p className="comment-date right">
                     {moment(timestamp).format(DEFAULT_DATE_FORMAT)}
                 </p>
             </div>

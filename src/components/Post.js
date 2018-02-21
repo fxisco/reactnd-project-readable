@@ -26,10 +26,10 @@ const Post = ({
                 {body}
             </p>
             <div className="post-footer">
-                <p className="post-author">
+                <p className="post-author right">
                     {author}
                 </p>
-                <p className="post-date">
+                <p className="post-date right">
                     {moment(timestamp).format(DEFAULT_DATE_FORMAT)}
                 </p>
             </div>

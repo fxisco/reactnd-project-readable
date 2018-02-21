@@ -2,9 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as postsActionCreators from '../actions/posts';
-import { generateId  } from '../helpers/utils';
+import { generateId } from '../helpers/utils';
+import {
+    sortByDateASC,
+    sortByDateDESC,
+    sortByVoteScoreASC,
+    sortByVoteScoreDESC,
+} from '../helpers/array';
+import { SORT_BY, SORT_ORDER } from '../constants/values';
 import NavBar from '../components/NavBar';
 import Posts from '../components/Posts';
+
+const { DATE, SCORE } = SORT_BY;
+const { ASC, DESC } = SORT_ORDER;
 
 class PostsContainer extends Component {
     constructor(props) {
@@ -14,6 +24,8 @@ class PostsContainer extends Component {
             author: '',
             body: '',
             title: '',
+            sortBy: DATE,
+            sortOrder: ASC,
         };
 
         this.onTextChange = this.onTextChange.bind(this);
@@ -26,7 +38,7 @@ class PostsContainer extends Component {
 
         this.setState({
             [name]: value
-        })
+        });
     }
 
     onVote(id, type) {
@@ -60,6 +72,18 @@ class PostsContainer extends Component {
         });
     }
 
+    sortPostsBy(value) {
+        const change = {
+            sortBy: value
+        };
+
+        if (value === this.state.sortBy) {
+            change.sortOrder = this.state.sortOrder === ASC ? DESC: ASC;
+        }
+
+        this.setState(change);
+    }
+
     render() {
         const {
             categories,
@@ -69,9 +93,21 @@ class PostsContainer extends Component {
         const {
             author,
             body,
+            sortBy,
+            sortOrder,
             title,
         } = this.state;
         const selectedCategory = this.props.match.params.category || '';
+
+        let sortOrderDirection;
+
+        if (sortBy === DATE) {
+            sortOrderDirection = sortOrder === ASC ? sortByDateASC : sortByDateDESC;
+
+        } else {
+            sortOrderDirection = sortOrder === ASC ? sortByVoteScoreASC : sortByVoteScoreDESC;
+        }
+        const sortedPosts = [...posts].sort(sortOrderDirection);
 
         return (
             <div>
@@ -80,6 +116,21 @@ class PostsContainer extends Component {
                     selectedCategory={selectedCategory}
                 />
                 <div className="container">
+                    <div className="post-sorter">
+                        <span>Sort by: </span>
+                        <ul className="post-sorter-list">
+                            <li>
+                                <button className={`sort-button ${sortBy === DATE ? 'selected': ''}`} onClick={() => { this.sortPostsBy(DATE); }}>
+                                    {sortBy === DATE ? `Date ${sortOrder === ASC ? '↑': '↓'}` : 'Date'}
+                                </button>
+                            </li>
+                            <li>
+                                <button className={`sort-button ${sortBy === SCORE ? 'selected': ''}`} onClick={() => { this.sortPostsBy(SCORE); }}>
+                                    {sortBy === SCORE ? `Score ${sortOrder === ASC ? '↑': '↓'}` : 'Score'}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                     {selectedCategory &&
                         <div className="new-post-container">
                             <div className="new-post-info">
@@ -98,7 +149,7 @@ class PostsContainer extends Component {
                     }
                     <Posts
                         category={this.props.match.params.category}
-                        posts={posts}
+                        posts={sortedPosts}
                         onVote={this.onVote}
                     />
                 </div>
