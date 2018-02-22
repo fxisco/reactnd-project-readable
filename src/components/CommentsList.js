@@ -3,12 +3,13 @@ import moment from 'moment';
 import { DEFAULT_DATE_FORMAT } from '../constants/values';
 import Score from './Score';
 
-const Comment = ({ author, body, deleted, id, onDeleteComment, voteScore, timestamp }) => {
+const Comment = ({ author, body, deleted, id, onEditComment,onDeleteComment, voteScore, timestamp }) => {
     return (
         deleted ? null :
         <li className="comment-container">
             <div className="comment-action">
-                <button className="action-delete" onClick={onDeleteComment}>X</button>
+                <button className="action action-edit" onClick={onEditComment}>&#x270E;</button>
+                <button className="action action-delete" onClick={onDeleteComment}>X</button>
             </div>
             <div>
                 <b>{author}</b>
@@ -28,7 +29,7 @@ const Comment = ({ author, body, deleted, id, onDeleteComment, voteScore, timest
     );
 }
 
-const CommentsList = ({ comments, onDeleteComment }) => {
+const CommentsList = ({ comments = [], onDeleteComment = () => {}, onEditComment = () => {} }) => {
     return (
         <ul className="post-comments-container">
             {Object.keys(comments)
@@ -45,6 +46,7 @@ const CommentsList = ({ comments, onDeleteComment }) => {
                         <Comment
                             key={`comment-${id}`}
                             id={id} {...comment}
+                            onEditComment={onEditComment.bind(null, comment.id)}
                             onDeleteComment={onDeleteComment.bind(null, comment.id)}
                         />
                     )

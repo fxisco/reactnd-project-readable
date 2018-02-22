@@ -6,6 +6,7 @@ import {
     getPostComments,
     setNewPost,
     updatePostVote,
+    saveComment,
     submitComment,
 } from '../helpers/api';
 
@@ -137,6 +138,25 @@ export const postComment = (comment) => {
         submitComment(comment)
             .then((data) => {
                 dispatch(postCommentSuccess(data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const postCommentEditSuccess = (comment) => {
+    return {
+        type: postActions.POST_COMMENT_EDIT_SUCCESS,
+        comment
+    };
+};
+
+export const postCommentEdit = (id, update) => {
+    return (dispatch) => {
+        saveComment(id, update)
+            .then((data) => {
+                dispatch(postCommentEditSuccess(data));
             })
             .catch((error) => {
                 console.log(error);

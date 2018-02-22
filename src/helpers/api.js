@@ -65,3 +65,9 @@ export const deleteComment = (id) => {
 export const submitComment = (comment) => {
     return fetchURL(`${API_URL}/comments`, { method: POST, body:{ ...comment } });
 };
+
+export const saveComment = (id, update) => {
+    return fetchURL(`${API_URL}/comments/${id}`, { method: PUT, body:{ ...update } });
+};
+
+

@@ -14,12 +14,17 @@ class PostDetail extends Component {
 
         this.state = {
             author: '',
-            comment: ''
+            comment: '',
+            isEditing: false,
+            currentCommentId: '',
         }
 
         this.onDeleteComment = this.onDeleteComment.bind(this);
+        this.onEditComment = this.onEditComment.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.onCommentSubmit = this.onCommentSubmit.bind(this);
+        this.onCommentEditReset = this.onCommentEditReset.bind(this);
+        this.onCommentEditSave = this.onCommentEditSave.bind(this);
     }
     componentDidMount() {
         const { post, comments } = this.props;
@@ -35,6 +40,19 @@ class PostDetail extends Component {
 
     onDeleteComment(id) {
         this.props.deletePostComment(id);
+    }
+
+    onEditComment(id) {
+        const { comments } = this.props;
+        const currentComment = Object.values(comments).find(item => item.id === id);
+        const { author, body } = currentComment;
+
+        this.setState({
+            author,
+            comment: body,
+            isEditing: true,
+            currentCommentId: id,
+        });
     }
 
     onTextChange(event) {
@@ -54,14 +72,33 @@ class PostDetail extends Component {
             parentId: this.props.match.params.id,
         });
 
+        this.onCommentEditSave();
+    }
+
+    onCommentEditSave() {
+        const { comments } = this.props;
+        const { comment, currentCommentId } = this.state;
+        const currentComment = Object.values(comments).find(item => item.id === currentCommentId);
+        const commentUpdate = {
+            body: comment,
+            timestamp: Date.now(),
+        };
+
+        this.props.postCommentEdit(currentCommentId, commentUpdate);
+
+        this.onCommentEditReset();
+    }
+
+    onCommentEditReset() {
         this.setState({
             author: '',
-            comment: ''
+            comment: '',
+            isEditing: false
         });
     }
 
     render() {
-        const { author, comment } = this.state;
+        const { author, comment, isEditing } = this.state;
         const { comments, post } = this.props;
 
         return (
@@ -74,7 +111,13 @@ class PostDetail extends Component {
                     <input className="comment-author" name="author" onChange={this.onTextChange} value={author} placeholder="Enter author" />
                     <input className="comment-input" name="comment" onChange={this.onTextChange} value={comment} placeholder="Enter comment" />
                     <div className="comment-form-submit">
-                        {author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
+                        {isEditing && comment &&
+                            <div>
+                                <button className="comment-save" onClick={this.onCommentEditSave}>Save</button>
+                                <button className="comment-cancel" onClick={this.onCommentEditReset}>Cancel</button>
+                            </div>
+                        }
+                        {!isEditing && author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
                     </div>
                 </div>
                 {comments && Object.keys(comments).length > 0 &&
@@ -82,7 +125,11 @@ class PostDetail extends Component {
                         <h2>
                             Comments
                         </h2>
-                        <CommentsList comments={comments} onDeleteComment={this.onDeleteComment} />
+                        <CommentsList
+                            comments={comments}
+                            onDeleteComment={this.onDeleteComment}
+                            onEditComment={this.onEditComment}
+                        />
                     </div>
                 }
             </div>

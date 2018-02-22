@@ -149,8 +149,14 @@ nav.categories .active {
 .new-post,
 .comment-input,
 .comment-submit,
+.comment-save,
+.comment-cancel,
 .comment-author {
     font-size: 18px;
+}
+
+.comment-cancel {
+    margin-left: 10px;
 }
 
 .new-post {
@@ -187,4 +193,8 @@ nav.categories .active {
 
 .comment-form-submit {
     text-align: right;
+}
+
+.action {
+    margin-left: 10px;
 }
