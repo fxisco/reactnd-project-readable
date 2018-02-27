@@ -33,7 +33,9 @@ class PostDetail extends Component {
         this.onPostEdit = this.onPostEdit.bind(this);
         this.onPostSave = this.onPostSave.bind(this);
         this.onPostChange = this.onPostChange.bind(this);
-        this.onVote = this.onVote.bind(this);
+        this.onPostVote = this.onPostVote.bind(this);
+        this.onCommentVote = this.onCommentVote.bind(this);
+
     }
     componentDidMount() {
         const { post, comments } = this.props;
@@ -132,8 +134,12 @@ class PostDetail extends Component {
         });
     }
 
-    onVote(id, type) {
+    onPostVote(id, type) {
         this.props.votePost(id, type);
+    }
+
+    onCommentVote(id, type) {
+        this.props.voteComment(id, type);
     }
 
     render() {
@@ -159,8 +165,8 @@ class PostDetail extends Component {
                         onEdit={this.onPostEdit}
                         onSave={this.onPostSave}
                         isEditing={isEditingPost}
-                        onVoteDown={this.onVote.bind(null, post.id, DOWN_VOTE)}
-                        onVoteUp={this.onVote.bind(null, post.id, UP_VOTE)}
+                        onVoteDown={this.onPostVote.bind(null, post.id, DOWN_VOTE)}
+                        onVoteUp={this.onPostVote.bind(null, post.id, UP_VOTE)}
                         showEdit={true}
                     />
                 }
@@ -186,6 +192,7 @@ class PostDetail extends Component {
                             comments={comments}
                             onDeleteComment={this.onDeleteComment}
                             onEditComment={this.onEditComment}
+                            onVote={this.onCommentVote}
                         />
                     </div>
                 }

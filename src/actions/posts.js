@@ -7,6 +7,7 @@ import {
     putPost,
     setNewPost,
     updatePostVote,
+    updateCommentVote,
     saveComment,
     submitComment,
 } from '../helpers/api';
@@ -55,6 +56,18 @@ export const votePost = (id, type) => {
         updatePostVote(id, type)
             .then((data) => {
                 dispatch(updatePost(id, data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};
+
+export const voteComment = (id, type) => {
+    return (dispatch) => {
+        updateCommentVote(id, type)
+            .then((data) => {
+                dispatch(postCommentEditSuccess(data));
             })
             .catch((error) => {
                 console.log(error);

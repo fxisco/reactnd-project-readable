@@ -97,7 +97,6 @@ const posts = (state = initialState, action) => {
         case postActions.POST_COMMENT_EDIT_SUCCESS: {
             const index = Object.keys(state.postsComments[action.comment.parentId]).find((index) => {
                 const comment  = state.postsComments[action.comment.parentId][index];
-                console.log('::prueba', index, comment);
 
                 return comment.id === action.comment.id;
             });

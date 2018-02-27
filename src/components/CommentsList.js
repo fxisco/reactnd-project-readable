@@ -1,9 +1,13 @@
 import React from 'react';
 import moment from 'moment';
-import { DEFAULT_DATE_FORMAT } from '../constants/values';
+import {
+    DEFAULT_DATE_FORMAT,
+    DOWN_VOTE,
+    UP_VOTE
+} from '../constants/values';
 import Score from './Score';
 
-const Comment = ({ author, body, deleted, id, onEditComment,onDeleteComment, voteScore, timestamp }) => {
+const Comment = ({ author, body, deleted, id, onEditComment,onDeleteComment, onVoteDown, onVoteUp, voteScore, timestamp }) => {
     return (
         deleted ? null :
         <li className="comment-container">
@@ -23,13 +27,20 @@ const Comment = ({ author, body, deleted, id, onEditComment,onDeleteComment, vot
             <div>
                 <Score
                     voteScore={voteScore}
+                    onVoteUp={onVoteUp}
+                    onVoteDown={onVoteDown}
                 />
             </div>
         </li>
     );
 }
 
-const CommentsList = ({ comments = [], onDeleteComment = () => {}, onEditComment = () => {} }) => {
+const CommentsList = ({
+    comments = [],
+    onDeleteComment = () => {},
+    onEditComment = () => {},
+    onVote = () => {},
+}) => {
     return (
         <ul className="post-comments-container">
             {Object.keys(comments)
@@ -48,6 +59,8 @@ const CommentsList = ({ comments = [], onDeleteComment = () => {}, onEditComment
                             id={id} {...comment}
                             onEditComment={onEditComment.bind(null, comment.id)}
                             onDeleteComment={onDeleteComment.bind(null, comment.id)}
+                            onVoteUp={onVote.bind(null, comment.id, UP_VOTE)}
+                            onVoteDown={onVote.bind(null, comment.id, DOWN_VOTE)}
                         />
                     )
                 })}

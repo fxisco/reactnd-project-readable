@@ -54,6 +54,10 @@ export const updatePostVote = (id, type) => {
     return fetchURL(`${API_URL}/posts/${id}`, { method: POST, body:{ option: type }});
 };
 
+export const updateCommentVote = (id, type) => {
+    return fetchURL(`${API_URL}/comments/${id}`, { method: POST, body:{ option: type }});
+};
+
 export const setNewPost = (post = {}) => {
     return fetchURL(`${API_URL}/posts`, { method: POST, body:{ ...post }});
 };
