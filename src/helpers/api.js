@@ -70,4 +70,8 @@ export const saveComment = (id, update) => {
     return fetchURL(`${API_URL}/comments/${id}`, { method: PUT, body:{ ...update } });
 };
 
+export const putPost = (id, post = {}) => {
+    return fetchURL(`${API_URL}/posts/${id}`, { method: PUT, body:{ ...post }});
+};
+
 

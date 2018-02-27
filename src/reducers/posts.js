@@ -32,7 +32,13 @@ const posts = (state = initialState, action) => {
                     ...state.posts.slice(0, index),
                     action.data,
                     ...state.posts.slice(index + 1)
-                ]
+                ],
+                postsDetails: {
+                    ...state.postsDetails,
+                    [action.data.id]: {
+                        ...action.data
+                    }
+                }
             };
         }
 

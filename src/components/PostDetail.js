@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom';
 import * as postActionCreators from '../actions/posts';
 import CommentsList from './CommentsList';
 import { generateId  } from '../helpers/utils';
-
+import {
+    DOWN_VOTE,
+    UP_VOTE,
+} from '../constants/values';
 
 class PostDetail extends Component {
     constructor(props) {
@@ -15,8 +18,10 @@ class PostDetail extends Component {
         this.state = {
             author: '',
             comment: '',
-            isEditing: false,
+            isEditingComment: false,
+            isEditingPost: false,
             currentCommentId: '',
+            currentPostText: ''
         }
 
         this.onDeleteComment = this.onDeleteComment.bind(this);
@@ -25,6 +30,10 @@ class PostDetail extends Component {
         this.onCommentSubmit = this.onCommentSubmit.bind(this);
         this.onCommentEditReset = this.onCommentEditReset.bind(this);
         this.onCommentEditSave = this.onCommentEditSave.bind(this);
+        this.onPostEdit = this.onPostEdit.bind(this);
+        this.onPostSave = this.onPostSave.bind(this);
+        this.onPostChange = this.onPostChange.bind(this);
+        this.onVote = this.onVote.bind(this);
     }
     componentDidMount() {
         const { post, comments } = this.props;
@@ -50,7 +59,7 @@ class PostDetail extends Component {
         this.setState({
             author,
             comment: body,
-            isEditing: true,
+            isEditingComment: true,
             currentCommentId: id,
         });
     }
@@ -93,12 +102,49 @@ class PostDetail extends Component {
         this.setState({
             author: '',
             comment: '',
-            isEditing: false
+            isEditingComment: false
         });
     }
 
+    onPostEdit() {
+        this.setState({
+            isEditingPost: true,
+            currentPostText: this.props.post.body
+        });
+    }
+
+    onPostSave() {
+        const { post } = this.props;
+        const { currentPostText } = this.state;
+
+        this.props.savePost(post.id, {
+            body: currentPostText
+        });
+
+        this.setState({
+            isEditingPost:false
+        });
+    }
+
+    onPostChange(event) {
+        this.setState({
+            currentPostText: event.target.value
+        });
+    }
+
+    onVote(id, type) {
+        this.props.votePost(id, type);
+    }
+
     render() {
-        const { author, comment, isEditing } = this.state;
+        const {
+            author,
+            comment,
+            currentPostText,
+            isEditingComment,
+            isEditingPost
+        } = this.state;
+
         const { comments, post } = this.props;
 
         return (
@@ -106,18 +152,29 @@ class PostDetail extends Component {
                 <div className="row">
                     <Link to={post ? `/${post.category}` : '/'} className="back-button">↵ Back</Link>
                 </div>
-                {post && <Post {...post} />}
+                {post &&
+                    <Post {...post}
+                        currentText={currentPostText}
+                        onChange={this.onPostChange}
+                        onEdit={this.onPostEdit}
+                        onSave={this.onPostSave}
+                        isEditing={isEditingPost}
+                        onVoteDown={this.onVote.bind(null, post.id, DOWN_VOTE)}
+                        onVoteUp={this.onVote.bind(null, post.id, UP_VOTE)}
+                        showEdit={true}
+                    />
+                }
                 <div className="row">
                     <input className="comment-author" name="author" onChange={this.onTextChange} value={author} placeholder="Enter author" />
                     <input className="comment-input" name="comment" onChange={this.onTextChange} value={comment} placeholder="Enter comment" />
                     <div className="comment-form-submit">
-                        {isEditing && comment &&
+                        {isEditingComment && comment &&
                             <div>
                                 <button className="comment-save" onClick={this.onCommentEditSave}>Save</button>
                                 <button className="comment-cancel" onClick={this.onCommentEditReset}>Cancel</button>
                             </div>
                         }
-                        {!isEditing && author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
+                        {!isEditingComment && author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
                     </div>
                 </div>
                 {comments && Object.keys(comments).length > 0 &&

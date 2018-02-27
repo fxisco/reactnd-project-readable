@@ -159,7 +159,8 @@ nav.categories .active {
     margin-left: 10px;
 }
 
-.new-post {
+.new-post,
+.post-body {
     box-sizing: border-box;
     height: 100px;
     padding: 10px;
@@ -198,3 +199,4 @@ nav.categories .active {
 .action {
     margin-left: 10px;
 }
+

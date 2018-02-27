@@ -4,6 +4,7 @@ import {
     getPost,
     getPosts,
     getPostComments,
+    putPost,
     setNewPost,
     updatePostVote,
     saveComment,
@@ -34,6 +35,18 @@ export const updatePost = (id, data) => {
         type: postActions.UPDATE_POST_SUCCESS,
         id,
         data
+    };
+};
+
+export const savePost = (id, data) => {
+    return (dispatch) => {
+        putPost(id, data)
+            .then((data) => {
+                dispatch(updatePost(id, data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 };
 

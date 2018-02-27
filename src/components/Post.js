@@ -8,7 +8,13 @@ const Post = ({
     author,
     body,
     category,
+    currentText,
     id,
+    isEditing = false,
+    showEdit = false,
+    onEdit = () => {},
+    onSave = () => {},
+    onChange = () => {},
     onVoteDown = () => {},
     onVoteUp = () => {},
     timestamp,
@@ -17,14 +23,21 @@ const Post = ({
 }) => {
     return (
         <div key={id} className="post-container">
+            {showEdit &&
+                <div className="right">
+                    {isEditing && <button className="action action-save" onClick={onSave}>&#10004;</button>}
+                    {!isEditing && <button className="action action-edit" onClick={onEdit}>&#x270E;</button>}
+                    {!isEditing && <button className="action action-delete" onClick={() => {}}>X</button>}
+                </div>}
             <Link
                 to={`/${category}/${id}`}
                 className="post-title">
                 {title}
             </Link>
-            <p className="post-body">
+            {isEditing && <textarea className="post-body" placeholder="Write your text here..." type="text" value={currentText} onChange={onChange} />}
+            {!isEditing && <p className="post-body">
                 {body}
-            </p>
+            </p>}
             <div className="post-footer">
                 <p className="post-author right">
                     {author}
