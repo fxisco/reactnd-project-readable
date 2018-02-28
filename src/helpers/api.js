@@ -78,4 +78,6 @@ export const putPost = (id, post = {}) => {
     return fetchURL(`${API_URL}/posts/${id}`, { method: PUT, body:{ ...post }});
 };
 
-
+export const removePost = (id) => {
+    return fetchURL(`${API_URL}/posts/${id}`, { method: DELETE });
+};

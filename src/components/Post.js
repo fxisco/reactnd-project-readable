@@ -12,6 +12,7 @@ const Post = ({
     id,
     isEditing = false,
     showEdit = false,
+    onDelete = () => {},
     onEdit = () => {},
     onSave = () => {},
     onChange = () => {},
@@ -27,7 +28,7 @@ const Post = ({
                 <div className="right">
                     {isEditing && <button className="action action-save" onClick={onSave}>&#10004;</button>}
                     {!isEditing && <button className="action action-edit" onClick={onEdit}>&#x270E;</button>}
-                    {!isEditing && <button className="action action-delete" onClick={() => {}}>X</button>}
+                    {!isEditing && <button className="action action-delete" onClick={onDelete}>X</button>}
                 </div>}
             <Link
                 to={`/${category}/${id}`}

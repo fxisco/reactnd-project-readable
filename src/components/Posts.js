@@ -19,6 +19,11 @@ const Posts = ({
 
                     return !category || post.category === category;
                 })
+                .filter((id) => {
+                    const post = posts[id];
+
+                    return !post.deleted;
+                })
                 .map((id) => {
                 const post = posts[id];
 

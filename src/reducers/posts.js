@@ -48,7 +48,11 @@ const posts = (state = initialState, action) => {
                 postsComments: {
                     ...state.postsComments,
                     [action.id]: {
-                        ...action.comments
+                        ...action.comments.reduce((accum, item) => {
+                            accum[item.id] = item;
+
+                            return accum;
+                        }, {})
                     }
                 }
             };
@@ -58,8 +62,8 @@ const posts = (state = initialState, action) => {
             return {
                 ...state,
                 postsDetails: {
-                    ...state.posts,
-                    [action.post.id]: {
+                    ...state.postsDetails,
+                    [action.id]: {
                         ...action.post
                     }
                 }
@@ -79,6 +83,22 @@ const posts = (state = initialState, action) => {
             };
         }
 
+        case postActions.DELETE_POST_COMMENT_SUCCESS: {
+            const postsComments = { ...state.postsComments[action.postId] };
+
+            delete postsComments[action.commentId];
+
+            return {
+                ...state,
+                postsComments: {
+                    ...state.postsComments,
+                    [action.postId]: {
+                        ...postsComments
+                    }
+                }
+            };
+        }
+
         case postActions.POST_COMMENT_SUCCESS: {
             return {
                 ...state,
@@ -86,7 +106,7 @@ const posts = (state = initialState, action) => {
                     ...state.postsComments,
                     [action.comment.parentId] : {
                         ...state.postsComments[action.comment.parentId],
-                        [Object.keys(state.postsComments[action.comment.parentId]).length + 1]: {
+                        [action.comment.id]: {
                             ...action.comment
                         }
                     }
@@ -95,19 +115,13 @@ const posts = (state = initialState, action) => {
         }
 
         case postActions.POST_COMMENT_EDIT_SUCCESS: {
-            const index = Object.keys(state.postsComments[action.comment.parentId]).find((index) => {
-                const comment  = state.postsComments[action.comment.parentId][index];
-
-                return comment.id === action.comment.id;
-            });
-
             return {
                 ...state,
                 postsComments: {
                     ...state.postsComments,
                     [action.comment.parentId] : {
                         ...state.postsComments[action.comment.parentId],
-                        [index]: {
+                        [action.comment.id]: {
                             ...action.comment
                         },
                     }

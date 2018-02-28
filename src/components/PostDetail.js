@@ -32,6 +32,7 @@ class PostDetail extends Component {
         this.onCommentEditSave = this.onCommentEditSave.bind(this);
         this.onPostEdit = this.onPostEdit.bind(this);
         this.onPostSave = this.onPostSave.bind(this);
+        this.onPostDelete = this.onPostDelete.bind(this);
         this.onPostChange = this.onPostChange.bind(this);
         this.onPostVote = this.onPostVote.bind(this);
         this.onCommentVote = this.onCommentVote.bind(this);
@@ -49,8 +50,10 @@ class PostDetail extends Component {
         }
     }
 
-    onDeleteComment(id) {
-        this.props.deletePostComment(id);
+    onDeleteComment(commentId) {
+        const { post } = this.props;
+
+        this.props.deletePostComment(post.id, commentId);
     }
 
     onEditComment(id) {
@@ -83,13 +86,12 @@ class PostDetail extends Component {
             parentId: this.props.match.params.id,
         });
 
-        this.onCommentEditSave();
+        this.onCommentEditReset();
     }
 
     onCommentEditSave() {
         const { comments } = this.props;
         const { comment, currentCommentId } = this.state;
-        const currentComment = Object.values(comments).find(item => item.id === currentCommentId);
         const commentUpdate = {
             body: comment,
             timestamp: Date.now(),
@@ -142,6 +144,10 @@ class PostDetail extends Component {
         this.props.voteComment(id, type);
     }
 
+    onPostDelete(id) {
+        this.props.deletePost(id);
+    }
+
     render() {
         const {
             author,
@@ -151,49 +157,63 @@ class PostDetail extends Component {
             isEditingPost
         } = this.state;
 
-        const { comments, post } = this.props;
+        const { comments, match, post } = this.props;
 
         return (
             <div className="container">
-                <div className="row">
-                    <Link to={post ? `/${post.category}` : '/'} className="back-button">↵ Back</Link>
-                </div>
-                {post &&
-                    <Post {...post}
-                        currentText={currentPostText}
-                        onChange={this.onPostChange}
-                        onEdit={this.onPostEdit}
-                        onSave={this.onPostSave}
-                        isEditing={isEditingPost}
-                        onVoteDown={this.onPostVote.bind(null, post.id, DOWN_VOTE)}
-                        onVoteUp={this.onPostVote.bind(null, post.id, UP_VOTE)}
-                        showEdit={true}
-                    />
-                }
-                <div className="row">
-                    <input className="comment-author" name="author" onChange={this.onTextChange} value={author} placeholder="Enter author" />
-                    <input className="comment-input" name="comment" onChange={this.onTextChange} value={comment} placeholder="Enter comment" />
-                    <div className="comment-form-submit">
-                        {isEditingComment && comment &&
-                            <div>
-                                <button className="comment-save" onClick={this.onCommentEditSave}>Save</button>
-                                <button className="comment-cancel" onClick={this.onCommentEditReset}>Cancel</button>
+                {post && post.deleted ?
+                    <div>
+                        <h1>Comment deleted</h1>
+                        <p>
+                            <Link to={`/${match.params.category}`} className="back-button">↵ Back</Link>
+                        </p>
+                    </div> :
+                    <div>
+                        <div className="row">
+                            <Link to={post ? `/${post.category}` : '/'} className="back-button">↵ Back</Link>
+                        </div>
+                        {post &&
+                            <Post {...post}
+                                currentText={currentPostText}
+                                onChange={this.onPostChange}
+                                onDelete={this.onPostDelete.bind(null, post.id)}
+                                onEdit={this.onPostEdit}
+                                onSave={this.onPostSave}
+                                isEditing={isEditingPost}
+                                onVoteDown={this.onPostVote.bind(null, post.id, DOWN_VOTE)}
+                                onVoteUp={this.onPostVote.bind(null, post.id, UP_VOTE)}
+                                showEdit={true}
+                            />
+                        }
+                        <div className="row">
+                            <fieldset>
+                                <legend>{isEditingComment ? 'Edit': 'New'} Comment</legend>
+                                <input className="comment-author" name="author" onChange={this.onTextChange} value={author} placeholder="Enter author" readOnly={isEditingComment} disabled={isEditingComment} />
+                                <input className="comment-input" name="comment" onChange={this.onTextChange} value={comment} placeholder="Enter comment" />
+                                <div className="comment-form-submit">
+                                    {isEditingComment && comment &&
+                                        <div>
+                                            <button className="comment-save" onClick={this.onCommentEditSave}>Save</button>
+                                            <button className="comment-cancel" onClick={this.onCommentEditReset}>Cancel</button>
+                                        </div>
+                                    }
+                                    {!isEditingComment && author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
+                                </div>
+                            </fieldset>
+                        </div>
+                        {comments && Object.keys(comments).length > 0 &&
+                            <div className="row">
+                                <h2>
+                                    Comments
+                                </h2>
+                                <CommentsList
+                                    comments={comments}
+                                    onDeleteComment={this.onDeleteComment}
+                                    onEditComment={this.onEditComment}
+                                    onVote={this.onCommentVote}
+                                />
                             </div>
                         }
-                        {!isEditingComment && author && comment && <button className="comment-submit" onClick={this.onCommentSubmit}>Submit</button>}
-                    </div>
-                </div>
-                {comments && Object.keys(comments).length > 0 &&
-                    <div className="row">
-                        <h2>
-                            Comments
-                        </h2>
-                        <CommentsList
-                            comments={comments}
-                            onDeleteComment={this.onDeleteComment}
-                            onEditComment={this.onEditComment}
-                            onVote={this.onCommentVote}
-                        />
                     </div>
                 }
             </div>

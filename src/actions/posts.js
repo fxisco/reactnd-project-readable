@@ -8,6 +8,7 @@ import {
     setNewPost,
     updatePostVote,
     updateCommentVote,
+    removePost,
     saveComment,
     submitComment,
 } from '../helpers/api';
@@ -114,9 +115,10 @@ export const fetchPostComments = (id) => {
     };
 };
 
-export const fetchPostSuccess = (post) => {
+export const fetchPostSuccess = (id, post) => {
     return {
         type: postActions.FETCH_POST_SUCCESS,
+        id,
         post
     };
 };
@@ -125,7 +127,11 @@ export const fetchPost = (id) => {
     return (dispatch) => {
         getPost(id)
             .then((post) => {
-                dispatch(fetchPostSuccess(post));
+                if (post.deleted !== undefined && !post.deleted) {
+                    dispatch(fetchPostSuccess(id, post));
+                } else {
+                    dispatch(fetchPostSuccess(id, { deleted: true }));
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -133,18 +139,31 @@ export const fetchPost = (id) => {
     };
 };
 
-export const deletePostCommentSuccess = (id) => {
-    return {
-        type: postActions.DELETE_POST_SUCCESS,
-        id
+export const deletePost = (postId) => {
+    return (dispatch) => {
+        removePost(postId)
+            .then((post) => {
+                dispatch(updatePost(postId, post));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 };
 
-export const deletePostComment = (id) => {
+export const deletePostCommentSuccess = (postId, commentId) => {
+    return {
+        type: postActions.DELETE_POST_COMMENT_SUCCESS,
+        postId,
+        commentId
+    };
+};
+
+export const deletePostComment = (postId, commentId) => {
     return (dispatch) => {
-        deleteComment(id)
+        deleteComment(commentId)
             .then((comment) => {
-                dispatch(deletePostCommentSuccess(comment.id));
+                dispatch(deletePostCommentSuccess(postId, comment.id));
             })
             .catch((error) => {
                 console.log(error);
