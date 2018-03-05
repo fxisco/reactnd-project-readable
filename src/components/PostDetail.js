@@ -90,7 +90,6 @@ class PostDetail extends Component {
     }
 
     onCommentEditSave() {
-        const { comments } = this.props;
         const { comment, currentCommentId } = this.state;
         const commentUpdate = {
             body: comment,
@@ -204,7 +203,7 @@ class PostDetail extends Component {
                         {comments && Object.keys(comments).length > 0 &&
                             <div className="row">
                                 <h2>
-                                    Comments
+                                    Comments ({Object.keys(comments).length})
                                 </h2>
                                 <CommentsList
                                     comments={comments}
