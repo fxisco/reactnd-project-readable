@@ -1,4 +1,10 @@
-import { mainActions } from '../constants/actions';
+import {
+    FETCH_CATEGORIES_SUCCESS,
+    FETCH_CATEGORY_POSTS_SUCCESS,
+    RESET_LOADING_TEXT,
+    SELECT_CATEGORY,
+    SET_LOADING_TEXT,
+} from '../actions/types';
 import { UNDEFINED_CATEGORY, CATEGORY_ALL } from '../constants/values';
 
 const initialState = {
@@ -10,7 +16,7 @@ const initialState = {
 
 const main = (state = initialState, action) => {
     switch (action.type) {
-        case mainActions.FETCH_CATEGORIES_SUCCESS: {
+        case FETCH_CATEGORIES_SUCCESS: {
             return {
                 ...state,
                 categories: [
@@ -21,14 +27,14 @@ const main = (state = initialState, action) => {
             };
         }
 
-        case mainActions.SELECT_CATEGORY: {
+        case SELECT_CATEGORY: {
             return {
                 ...state,
                 selectedCategoryIndex: action.categoryIndex
             }
         }
 
-        case mainActions.FETCH_CATEGORY_POSTS_SUCCESS: {
+        case FETCH_CATEGORY_POSTS_SUCCESS: {
             return {
                 ...state,
                 posts: {
@@ -38,14 +44,14 @@ const main = (state = initialState, action) => {
             }
         }
 
-        case mainActions.SET_LOADING_TEXT: {
+        case SET_LOADING_TEXT: {
             return {
                 ...state,
                 loadingText: action.text
             };
         }
 
-        case mainActions.RESET_LOADING_TEXT: {
+        case RESET_LOADING_TEXT: {
             return {
                 ...state,
                 loadingText: initialState.loadingText

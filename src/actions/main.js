@@ -1,4 +1,10 @@
-import { mainActions } from '../constants/actions';
+import {
+    FETCH_CATEGORIES_SUCCESS,
+    FETCH_CATEGORY_POSTS_SUCCESS,
+    RESET_LOADING_TEXT,
+    SELECT_CATEGORY,
+    SET_LOADING_TEXT,
+} from '../actions/types';
 import {
     getCategories,
     getCategoryPosts,
@@ -6,14 +12,14 @@ import {
 
 export const selectCategory = (categoryIndex) => {
     return {
-        type: mainActions.SELECT_CATEGORY,
+        type: SELECT_CATEGORY,
         categoryIndex
     };
 };
 
 export const fetchCategoriesSuccess = (categories) => {
     return {
-        type: mainActions.FETCH_CATEGORIES_SUCCESS,
+        type: FETCH_CATEGORIES_SUCCESS,
         categories
     };
 };
@@ -32,7 +38,7 @@ export const fetchCategories = () => {
 
 export const fetchCategoryPostsSuccess = (posts) => {
     return {
-        type: mainActions.FETCH_CATEGORY_POSTS_SUCCESS,
+        type: FETCH_CATEGORY_POSTS_SUCCESS,
         posts
     };
 };
@@ -57,13 +63,13 @@ export const fetchCategoryPosts = (category) => {
 
 export const setLoadingText = (text) => {
     return {
-        type: mainActions.SET_LOADING_TEXT,
+        type: SET_LOADING_TEXT,
         text
     };
 };
 
 export const resetLoadingText = () => {
     return {
-        type: mainActions.RESET_LOADING_TEXT,
+        type: RESET_LOADING_TEXT,
     };
 };

@@ -1,4 +1,14 @@
-import { postActions } from '../constants/actions';
+import {
+    DELETE_POST_SUCCESS,
+    DELETE_POST_COMMENT_SUCCESS,
+    FETCH_POST_SUCCESS,
+    FETCH_POST_COMMENTS_SUCCESS,
+    FETCH_POSTS_SUCCESS,
+    POST_COMMENT_SUCCESS,
+    POST_COMMENT_EDIT_SUCCESS,
+    SUBMIT_POST_SUCCESS,
+    UPDATE_POST_SUCCESS,
+} from '../actions/types';
 
 const initialState = {
     posts: [],
@@ -8,13 +18,13 @@ const initialState = {
 
 const posts = (state = initialState, action) => {
     switch (action.type) {
-        case postActions.FETCH_POSTS_SUCCESS: {
+        case FETCH_POSTS_SUCCESS: {
             return {
                 ...state,
                 posts: action.posts,
             };
         }
-        case postActions.SUBMIT_POST_SUCCESS: {
+        case SUBMIT_POST_SUCCESS: {
             return {
                 ...state,
                 posts: [
@@ -23,7 +33,7 @@ const posts = (state = initialState, action) => {
                 ]
             };
         }
-        case postActions.UPDATE_POST_SUCCESS: {
+        case UPDATE_POST_SUCCESS: {
             const index = state.posts.findIndex(item => item.id === action.id);
 
             return {
@@ -42,7 +52,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.FETCH_POST_COMMENTS_SUCCESS: {
+        case FETCH_POST_COMMENTS_SUCCESS: {
             return {
                 ...state,
                 postsComments: {
@@ -58,7 +68,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.FETCH_POST_SUCCESS: {
+        case FETCH_POST_SUCCESS: {
             return {
                 ...state,
                 postsDetails: {
@@ -70,7 +80,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.DELETE_POST_SUCCESS: {
+        case DELETE_POST_SUCCESS: {
             return {
                 ...state,
                 postsDetails: {
@@ -83,7 +93,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.DELETE_POST_COMMENT_SUCCESS: {
+        case DELETE_POST_COMMENT_SUCCESS: {
             const postsComments = { ...state.postsComments[action.postId] };
 
             delete postsComments[action.commentId];
@@ -99,7 +109,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.POST_COMMENT_SUCCESS: {
+        case POST_COMMENT_SUCCESS: {
             return {
                 ...state,
                 postsComments: {
@@ -114,7 +124,7 @@ const posts = (state = initialState, action) => {
             };
         }
 
-        case postActions.POST_COMMENT_EDIT_SUCCESS: {
+        case POST_COMMENT_EDIT_SUCCESS: {
             return {
                 ...state,
                 postsComments: {

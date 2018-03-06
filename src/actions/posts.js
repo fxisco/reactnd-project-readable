@@ -1,4 +1,14 @@
-import { postActions } from '../constants/actions';
+import {
+    DELETE_POST_SUCCESS,
+    DELETE_POST_COMMENT_SUCCESS,
+    FETCH_POST_SUCCESS,
+    FETCH_POST_COMMENTS_SUCCESS,
+    FETCH_POSTS_SUCCESS,
+    POST_COMMENT_SUCCESS,
+    POST_COMMENT_EDIT_SUCCESS,
+    SUBMIT_POST_SUCCESS,
+    UPDATE_POST_SUCCESS,
+} from '../actions/types';
 import {
     deleteComment,
     getPost,
@@ -15,7 +25,7 @@ import {
 
 export const fetchPostsSuccess = (posts) => {
     return {
-        type: postActions.FETCH_POSTS_SUCCESS,
+        type: FETCH_POSTS_SUCCESS,
         posts
     };
 };
@@ -34,7 +44,7 @@ export const fetchPosts = () => {
 
 export const updatePost = (id, data) => {
     return {
-        type: postActions.UPDATE_POST_SUCCESS,
+        type: UPDATE_POST_SUCCESS,
         id,
         data
     };
@@ -78,7 +88,7 @@ export const voteComment = (id, type) => {
 
 export const addPost = (post) => {
     return {
-        type: postActions.SUBMIT_POST_SUCCESS,
+        type: SUBMIT_POST_SUCCESS,
         post
     };
 };
@@ -97,7 +107,7 @@ export const submitPost = (post) => {
 
 export const fetchPostCommentsSuccess = (id, comments) => {
     return {
-        type: postActions.FETCH_POST_COMMENTS_SUCCESS,
+        type: FETCH_POST_COMMENTS_SUCCESS,
         comments,
         id
     };
@@ -117,7 +127,7 @@ export const fetchPostComments = (id) => {
 
 export const fetchPostSuccess = (id, post) => {
     return {
-        type: postActions.FETCH_POST_SUCCESS,
+        type: FETCH_POST_SUCCESS,
         id,
         post
     };
@@ -153,7 +163,7 @@ export const deletePost = (postId) => {
 
 export const deletePostCommentSuccess = (postId, commentId) => {
     return {
-        type: postActions.DELETE_POST_COMMENT_SUCCESS,
+        type: DELETE_POST_COMMENT_SUCCESS,
         postId,
         commentId
     };
@@ -173,7 +183,7 @@ export const deletePostComment = (postId, commentId) => {
 
 export const postCommentSuccess = (comment) => {
     return {
-        type: postActions.POST_COMMENT_SUCCESS,
+        type: POST_COMMENT_SUCCESS,
         comment
     };
 };
@@ -192,7 +202,7 @@ export const postComment = (comment) => {
 
 export const postCommentEditSuccess = (comment) => {
     return {
-        type: postActions.POST_COMMENT_EDIT_SUCCESS,
+        type: POST_COMMENT_EDIT_SUCCESS,
         comment
     };
 };
