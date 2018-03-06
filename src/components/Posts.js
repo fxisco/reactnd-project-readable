@@ -5,6 +5,20 @@ import {
 } from '../constants/values';
 import Post from './Post';
 
+const filterPosts = (posts, category) => {
+    return Object.keys(posts)
+            .filter((id) => {
+                const post = posts[id];
+
+                return !category || post.category === category;
+            })
+            .filter((id) => {
+                const post = posts[id];
+
+                return !post.deleted;
+            });
+};
+
 const Posts = ({
     category,
     onClick,
@@ -13,29 +27,20 @@ const Posts = ({
 }) => {
     return (
         <div>
-            {Object.keys(posts)
-                .filter((id) => {
-                    const post = posts[id];
-
-                    return !category || post.category === category;
-                })
-                .filter((id) => {
-                    const post = posts[id];
-
-                    return !post.deleted;
-                })
+            {filterPosts(posts, category)
                 .map((id) => {
-                const post = posts[id];
+                    const post = posts[id];
 
-                return (
-                    <Post
-                        key={`post-${id}`}
-                        onVoteDown={onVote.bind(null, post.id, DOWN_VOTE)}
-                        onVoteUp={onVote.bind(null, post.id, UP_VOTE)}
-                        {...post}
-                    />
-                );
-            })}
+                    return (
+                        <Post
+                            key={`post-${id}`}
+                            onVoteDown={onVote.bind(null, post.id, DOWN_VOTE)}
+                            onVoteUp={onVote.bind(null, post.id, UP_VOTE)}
+                            {...post}
+                        />
+                    );
+                })
+            }
         </div>
     );
 };
