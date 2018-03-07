@@ -23,6 +23,8 @@ class PostsContainer extends Component {
         this.state = {
             author: '',
             body: '',
+            selectedPostId: '',
+            isEditing: false,
             title: '',
             sortBy: DATE,
             sortOrder: ASC,
@@ -31,6 +33,9 @@ class PostsContainer extends Component {
         this.onTextChange = this.onTextChange.bind(this);
         this.onVote = this.onVote.bind(this);
         this.onPostDelete = this.onPostDelete.bind(this);
+        this.onPostEdit = this.onPostEdit.bind(this);
+        this.onPostReset = this.onPostReset.bind(this);
+        this.onPostSave = this.onPostSave.bind(this);
         this.onPostSubmit = this.onPostSubmit.bind(this);
     }
 
@@ -64,13 +69,11 @@ class PostsContainer extends Component {
             id: generateId(),
             timestamp: Date.now(),
             title,
+            voteScore: 1,
+            commentCount: 0
         }, this.props.match.params.category);
 
-        this.setState({
-            author: '',
-            body: '',
-            title: ''
-        });
+        this.onPostReset();
     }
 
     sortPostsBy(value) {
@@ -89,6 +92,36 @@ class PostsContainer extends Component {
         this.props.deletePost(id);
     }
 
+    onPostEdit(id) {
+        const post = this.props.posts.find(item => item.id === id);
+
+        this.setState({
+            selectedPostId: id,
+            author: post.author,
+            body: post.body,
+            isEditing: true,
+            title: post.title
+        });
+    }
+
+    onPostReset() {
+        this.setState({
+            author: '',
+            body: '',
+            isEditing: false,
+            selectedPostId: '',
+            title: ''
+        });
+    }
+
+    onPostSave() {
+        const { body, selectedPostId } = this.state;
+
+        this.props.savePost(selectedPostId, { body });
+
+        this.onPostReset();
+    }
+
     render() {
         const {
             categories,
@@ -98,6 +131,7 @@ class PostsContainer extends Component {
         const {
             author,
             body,
+            isEditing,
             sortBy,
             sortOrder,
             title,
@@ -139,15 +173,21 @@ class PostsContainer extends Component {
                     <div className="new-post-container">
                         <div className="new-post-info">
                             <div className="author">
-                                <input name="author" value={author} placeholder="Author" onChange={this.onTextChange} />
+                                <input name="author" value={author} placeholder="Author" onChange={this.onTextChange} readOnly={isEditing} disabled={isEditing} />
                             </div>
                             <div className="title">
-                                <input name="title" value={title} placeholder="Title" onChange={this.onTextChange} />
+                                <input name="title" value={title} placeholder="Title" onChange={this.onTextChange} readOnly={isEditing} disabled={isEditing} />
                             </div>
                         </div>
                         <div className="new-post-text">
                             <textarea className="new-post" name="body" placeholder="Write your text here..." type="text" value={body} onChange={this.onTextChange} />
-                            {author && body && title &&<button className="new-post-button" onClick={this.onPostSubmit}>Submit</button>}
+                            {!isEditing && author && body && title &&<button className="post-button new-post-button" onClick={this.onPostSubmit}>Submit</button>}
+                            {isEditing && author && body && title &&
+                                <div>
+                                    <button className="post-button edit-post-button" onClick={this.onPostSave}>Save</button>
+                                    <button className="post-button cancel-post-button" onClick={this.onPostReset}>Cancel</button>
+                                </div>
+                            }
                         </div>
                     </div>
                     <Posts
@@ -155,6 +195,7 @@ class PostsContainer extends Component {
                         posts={sortedPosts}
                         onVote={this.onVote}
                         onDelete={this.onPostDelete}
+                        onEdit={this.onPostEdit}
                     />
                 </div>
             </div>

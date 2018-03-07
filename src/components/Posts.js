@@ -23,6 +23,7 @@ const Posts = ({
     category,
     onClick,
     onDelete,
+    onEdit,
     onVote,
     posts = []
 }) => {
@@ -38,6 +39,7 @@ const Posts = ({
                             onVoteDown={onVote.bind(null, post.id, DOWN_VOTE)}
                             onVoteUp={onVote.bind(null, post.id, UP_VOTE)}
                             onDelete={onDelete.bind(null, post.id)}
+                            onEdit={onEdit.bind(null, post.id)}
                             {...post}
                         />
                     );

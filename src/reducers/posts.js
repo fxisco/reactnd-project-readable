@@ -40,12 +40,16 @@ const posts = (state = initialState, action) => {
                 ...state,
                 posts: [
                     ...state.posts.slice(0, index),
-                    action.data,
+                    {
+                        ...state.posts[index],
+                        ...action.data
+                    },
                     ...state.posts.slice(index + 1)
                 ],
                 postsDetails: {
                     ...state.postsDetails,
                     [action.data.id]: {
+                        ...state.posts[index],
                         ...action.data
                     }
                 }
@@ -95,11 +99,28 @@ const posts = (state = initialState, action) => {
 
         case DELETE_POST_COMMENT_SUCCESS: {
             const postsComments = { ...state.postsComments[action.postId] };
+            const postId = postsComments[action.commentId].parentId;
+            const index = state.posts.findIndex(item => item.id === postId);
 
             delete postsComments[action.commentId];
 
             return {
                 ...state,
+                posts: [
+                    ...state.posts.slice(0, index),
+                    {
+                        ...state.posts[index],
+                        commentCount: state.posts[index].commentCount - 1
+                    },
+                    ...state.posts.slice(index + 1)
+                ],
+                postsDetails: {
+                    ...state.postsDetails,
+                    [postId]: {
+                        ...state.posts[index],
+                        commentCount: state.posts[index].commentCount - 1
+                    }
+                },
                 postsComments: {
                     ...state.postsComments,
                     [action.postId]: {
@@ -110,8 +131,25 @@ const posts = (state = initialState, action) => {
         }
 
         case POST_COMMENT_SUCCESS: {
+            const index = state.posts.findIndex(item => item.id === action.comment.parentId);
+
             return {
                 ...state,
+                posts: [
+                    ...state.posts.slice(0, index),
+                    {
+                        ...state.posts[index],
+                        commentCount: state.posts[index].commentCount + 1
+                    },
+                    ...state.posts.slice(index + 1)
+                ],
+                postsDetails: {
+                    ...state.postsDetails,
+                    [action.comment.parentId]: {
+                        ...state.posts[index],
+                        commentCount: state.posts[index].commentCount + 1
+                    }
+                },
                 postsComments: {
                     ...state.postsComments,
                     [action.comment.parentId] : {
