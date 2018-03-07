@@ -8,10 +8,10 @@ const Post = ({
     author,
     body,
     category,
+    commentCount,
     currentText,
     id,
     isEditing = false,
-    showEdit = false,
     onDelete = () => {},
     onEdit = () => {},
     onSave = () => {},
@@ -24,12 +24,11 @@ const Post = ({
 }) => {
     return (
         <div key={id} className="post-container">
-            {showEdit &&
-                <div className="right">
-                    {isEditing && <button className="action action-save" onClick={onSave}>&#10004;</button>}
-                    {!isEditing && <button className="action action-edit" onClick={onEdit}>&#x270E;</button>}
-                    {!isEditing && <button className="action action-delete" onClick={onDelete}>X</button>}
-                </div>}
+            <div className="right">
+                {isEditing && <button className="action action-save" onClick={onSave}>&#10004;</button>}
+                {!isEditing && <button className="action action-edit" onClick={onEdit}>&#x270E;</button>}
+                {!isEditing && <button className="action action-delete" onClick={onDelete}>X</button>}
+            </div>
             <Link
                 to={`/${category}/${id}`}
                 className="post-title">
@@ -45,6 +44,9 @@ const Post = ({
                 </p>
                 <p className="post-date right">
                     {moment(timestamp).format(DEFAULT_DATE_FORMAT)}
+                </p>
+                <p className="post-date right">
+                    Comments: {commentCount}
                 </p>
             </div>
             <Score

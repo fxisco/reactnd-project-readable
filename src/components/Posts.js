@@ -22,6 +22,7 @@ const filterPosts = (posts, category) => {
 const Posts = ({
     category,
     onClick,
+    onDelete,
     onVote,
     posts = []
 }) => {
@@ -36,6 +37,7 @@ const Posts = ({
                             key={`post-${id}`}
                             onVoteDown={onVote.bind(null, post.id, DOWN_VOTE)}
                             onVoteUp={onVote.bind(null, post.id, UP_VOTE)}
+                            onDelete={onDelete.bind(null, post.id)}
                             {...post}
                         />
                     );

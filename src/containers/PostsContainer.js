@@ -30,6 +30,7 @@ class PostsContainer extends Component {
 
         this.onTextChange = this.onTextChange.bind(this);
         this.onVote = this.onVote.bind(this);
+        this.onPostDelete = this.onPostDelete.bind(this);
         this.onPostSubmit = this.onPostSubmit.bind(this);
     }
 
@@ -84,6 +85,10 @@ class PostsContainer extends Component {
         this.setState(change);
     }
 
+    onPostDelete(id) {
+        this.props.deletePost(id);
+    }
+
     render() {
         const {
             categories,
@@ -131,26 +136,25 @@ class PostsContainer extends Component {
                             </li>
                         </ul>
                     </div>
-                    {selectedCategory &&
-                        <div className="new-post-container">
-                            <div className="new-post-info">
-                                <div className="author">
-                                    <input name="author" value={author} placeholder="Author" onChange={this.onTextChange} />
-                                </div>
-                                <div className="title">
-                                    <input name="title" value={title} placeholder="Title" onChange={this.onTextChange} />
-                                </div>
+                    <div className="new-post-container">
+                        <div className="new-post-info">
+                            <div className="author">
+                                <input name="author" value={author} placeholder="Author" onChange={this.onTextChange} />
                             </div>
-                            <div className="new-post-text">
-                                <textarea className="new-post" name="body" placeholder="Write your text here..." type="text" value={body} onChange={this.onTextChange} />
-                                {author && body && title &&<button className="new-post-button" onClick={this.onPostSubmit}>Submit</button>}
+                            <div className="title">
+                                <input name="title" value={title} placeholder="Title" onChange={this.onTextChange} />
                             </div>
                         </div>
-                    }
+                        <div className="new-post-text">
+                            <textarea className="new-post" name="body" placeholder="Write your text here..." type="text" value={body} onChange={this.onTextChange} />
+                            {author && body && title &&<button className="new-post-button" onClick={this.onPostSubmit}>Submit</button>}
+                        </div>
+                    </div>
                     <Posts
                         category={this.props.match.params.category}
                         posts={sortedPosts}
                         onVote={this.onVote}
+                        onDelete={this.onPostDelete}
                     />
                 </div>
             </div>

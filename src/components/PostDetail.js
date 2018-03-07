@@ -181,7 +181,6 @@ class PostDetail extends Component {
                                 isEditing={isEditingPost}
                                 onVoteDown={this.onPostVote.bind(null, post.id, DOWN_VOTE)}
                                 onVoteUp={this.onPostVote.bind(null, post.id, UP_VOTE)}
-                                showEdit={true}
                             />
                         }
                         <div className="row">
